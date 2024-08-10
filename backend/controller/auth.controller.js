@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { User } from "../model/user.model.js";
+import { generateTokenandSetCookie } from "../utils/generateTokenamdSetCookie.js";
 
 export const signupController = async (req, res) => {
   const { email, name, password } = req.body;
@@ -17,18 +18,28 @@ export const signupController = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const verificationToken = await generateToken();
+    const verificationToken = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
 
-    const newUser = new User({
+    const user = new User({
       email,
       name,
       password: hashedPassword,
+      verificationToken,
+      verificationTokenExpiry: Date.now() + 24 * 60 * 60 * 1000,
     });
-    await newUser.save();
+
+    await user.save();
+
+    generateTokenandSetCookie(res, user._id);
+
     res.status(201).json({
       message: "User created successfully",
-      ...newUser,
-      password: undefined,
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
     });
   } catch (error) {
     res.status(400).json({
