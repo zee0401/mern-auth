@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
-import { User } from "../model/user.model.js";
+import crypto from "crypto";
+
 import { generateTokenandSetCookie } from "../utils/generateTokenamdSetCookie.js";
 import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/email.js";
+import { User } from "../model/user.model.js";
 
 export const signupController = async (req, res) => {
   const { email, name, password } = req.body;
@@ -120,6 +122,39 @@ export const signinController = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const forgotPasswordController = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetPasswordExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpiresAt = resetPasswordExpiresAt;
+
+    await user.save();
+
+    await sendResetPasswordEmail(
+      email,
+      `${process.env.CLIENT_URL}/reset-password/${resetToken}`
+    );
+  } catch (error) {
+    console.log("Error sending email", error);
+    res.status(400).json({
+      success: false,
       message: "Internal Server Error",
       error: error.message,
     });
