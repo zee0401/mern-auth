@@ -13,5 +13,5 @@ router.post("/login", signinController);
 router.post("/logout", logoutController);
 
 router.post("/verify-email", verifyEmailController);
-router.post("forgot-password", forgotPasswordController);
+router.post("/forgot-password", forgotPasswordController);
 export default router;

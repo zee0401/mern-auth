@@ -2,7 +2,11 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 import { generateTokenandSetCookie } from "../utils/generateTokenamdSetCookie.js";
-import { sendVerificationEmail, sendWelcomeEmail } from "../mailtrap/email.js";
+import {
+  sendResetPasswordEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from "../mailtrap/email.js";
 import { User } from "../model/user.model.js";
 
 export const signupController = async (req, res) => {
@@ -130,6 +134,7 @@ export const signinController = async (req, res) => {
 
 export const forgotPasswordController = async (req, res) => {
   const { email } = req.body;
+  console.log(email);
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -151,6 +156,11 @@ export const forgotPasswordController = async (req, res) => {
       email,
       `${process.env.CLIENT_URL}/reset-password/${resetToken}`
     );
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent successfully",
+    });
   } catch (error) {
     console.log("Error sending email", error);
     res.status(400).json({
