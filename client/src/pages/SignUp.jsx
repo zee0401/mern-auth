@@ -3,6 +3,7 @@ import { Lock, Mail, User } from "lucide-react";
 import React, { useState } from "react";
 import Input from "../components/Input";
 import { Link } from "react-router-dom";
+import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
 
 const SignUpPage = () => {
   //   const [name, setName] = useState("");
@@ -22,6 +23,11 @@ const SignUpPage = () => {
     });
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,28 +43,32 @@ const SignUpPage = () => {
         <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-green-400 to-emerald-500 text-transparent bg-clip-text">
           Create Account
         </h2>
-        <form onSubmit={() => {}}>
+        <form onSubmit={onSubmit}>
           <Input
             icon={User}
             type="text"
+            name="fullName"
             placeholder="Full Name"
             value={formData.fullName}
             onChange={handleChange}
           />
           <Input
             icon={Mail}
-            type="text"
+            type="email"
+            name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
           />
           <Input
             icon={Lock}
-            type="text"
+            type="password"
+            name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
           />
+          <PasswordStrengthMeter password={formData.password} />
 
           <motion.button
             className="mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white 
