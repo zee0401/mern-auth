@@ -21,6 +21,7 @@
 		"express": "^4.19.2",
 		"framer-motion": "^11.3.24",
 		"jsonwebtoken": "^9.0.2",
+		"lucide-react": "^0.427.0",
 		"mailtrap": "^3.4.0",
 		"mongoose": "^8.5.2",
 		"react-router-dom": "^6.26.0"

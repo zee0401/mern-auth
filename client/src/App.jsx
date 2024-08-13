@@ -1,3 +1,4 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import FloatingShape from "./components/FloatingShape";
 
@@ -28,6 +29,14 @@ function App() {
         left="-10%"
         delay={2}
       />
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={"Home"} />
+          <Route path="/signup" element={<signup />} />
+          <Route path="/login" element={<login />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
