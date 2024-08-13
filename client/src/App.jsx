@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import FloatingShape from "./components/FloatingShape";
+import SignUpPage from "./pages/SignUp";
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={"Home"} />
-          <Route path="/signup" element={<signup />} />
+          <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<login />} />
         </Routes>
       </BrowserRouter>
