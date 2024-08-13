@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Lock, Mail, User } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import Input from "../components/Input";
 import { Link } from "react-router-dom";
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
@@ -68,6 +68,7 @@ const SignUpPage = () => {
             value={formData.password}
             onChange={handleChange}
           />
+
           <PasswordStrengthMeter password={formData.password} />
 
           <motion.button
