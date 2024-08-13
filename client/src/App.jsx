@@ -3,6 +3,7 @@ import "./App.css";
 import FloatingShape from "./components/FloatingShape";
 import SignUpPage from "./pages/SignUp";
 import LoginPage from "./pages/Login";
+import VerifyEmailPage from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={"Home"} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
         </Routes>
       </BrowserRouter>
     </div>
