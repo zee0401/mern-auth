@@ -9,6 +9,13 @@ const VerifyEmailPage = () => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const verificationCode = code.join("");
+    console.log(verificationCode);
+  };
+
   const handleChange = (index, value) => {
     const newCode = [...code];
 
@@ -42,11 +49,12 @@ const VerifyEmailPage = () => {
     }
   };
 
-  //   useEffect(() => {
-  //     if (code.every((digit) => digit !== "")) {
-  //       handleSubmit(new Event("submit"));
-  //     }
-  //   }, [code]);
+  useEffect(() => {
+    if (code.every((digit) => digit !== "")) {
+      handleSubmit(new Event("submit"));
+    }
+  }, [code]);
+
   return (
     <div className="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
       <motion.div
@@ -62,7 +70,7 @@ const VerifyEmailPage = () => {
           Enter the 6-digit code sent to your email address.
         </p>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="flex justify-between">
             {code.map((digit, index) => (
               <input
