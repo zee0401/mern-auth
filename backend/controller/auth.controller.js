@@ -60,11 +60,19 @@ export const signupController = async (req, res) => {
 
 export const verifyEmailController = async (req, res) => {
   const { code } = req.body;
+  console.log("Received code:", code);
   try {
     const user = await User.findOne({
       verificationToken: code,
       verificationTokenExpiresAt: { $gt: Date.now() },
     });
+    console.log("Current time:", Date.now());
+    console.log(
+      "Verification expiry time:",
+      new Date(user.verificationTokenExpiresAt).getTime()
+    );
+
+    console.log("User found:", user);
 
     if (!user) {
       return res.status(400).json({
@@ -77,7 +85,7 @@ export const verifyEmailController = async (req, res) => {
     user.verificationTokenExpiresAt = undefined;
     await user.save();
 
-    await sendWelcomeEmail(user.email, user.name``);
+    await sendWelcomeEmail(user.email, user.name);
 
     res.status(200).json({
       message: "Email verified successfully",
