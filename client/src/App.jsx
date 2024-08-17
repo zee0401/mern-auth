@@ -5,8 +5,21 @@ import SignUpPage from "./pages/SignUp";
 import LoginPage from "./pages/Login";
 import EmailVerificationPage from "./pages/VerifyEmail";
 import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "./store/authStore";
+import { useEffect } from "react";
+import DashboardPage from "./pages/Dashboard";
+import {
+  ProtectedRoutes,
+  RedirectAuthenticatedUser,
+} from "./utils/protectedRoutes";
 
 function App() {
+  const { checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br
@@ -36,9 +49,31 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={"Home"} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoutes>
+                <DashboardPage />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <RedirectAuthenticatedUser>
+                <SignUpPage />
+              </RedirectAuthenticatedUser>
+            }
+          />
+
+          <Route
+            path="/login"
+            element={
+              <RedirectAuthenticatedUser>
+                <LoginPage />
+              </RedirectAuthenticatedUser>
+            }
+          />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
         </Routes>
       </BrowserRouter>
