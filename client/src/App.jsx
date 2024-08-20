@@ -13,6 +13,8 @@ import {
   RedirectAuthenticatedUser,
 } from "./utils/protectedRoutes";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ForgotPasswordPage from "./pages/forgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const { checkAuth, isCheckingAuth } = useAuthStore();
@@ -21,7 +23,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (!isCheckingAuth) return <LoadingSpinner />;
+  if (isCheckingAuth) return <LoadingSpinner />;
 
   return (
     <div
@@ -77,7 +79,23 @@ function App() {
               </RedirectAuthenticatedUser>
             }
           />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <RedirectAuthenticatedUser>
+                <ResetPassword />
+              </RedirectAuthenticatedUser>
+            }
+          />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
+          <Route
+            path="/forgot-password"
+            element={
+              <RedirectAuthenticatedUser>
+                <ForgotPasswordPage />
+              </RedirectAuthenticatedUser>
+            }
+          />
         </Routes>
       </BrowserRouter>
       <Toaster />

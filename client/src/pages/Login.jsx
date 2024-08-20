@@ -42,7 +42,9 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
           {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+
           <div className="flex items-center mb-6">
             <Link
               to="/forgot-password"

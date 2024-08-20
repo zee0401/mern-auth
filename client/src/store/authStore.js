@@ -11,6 +11,7 @@ export const useAuthStore = create((set) => ({
   error: null,
   isLoading: false,
   isCheckingAuth: true,
+  message: null,
 
   signup: async (email, password, name) => {
     set({ isLoading: true, error: null });
@@ -46,6 +47,7 @@ export const useAuthStore = create((set) => ({
         isLoading: false,
         isAuthenticated: true,
         user: response.data.user,
+        error: null,
       });
       return response.data.user;
     } catch (error) {
@@ -91,6 +93,65 @@ export const useAuthStore = create((set) => ({
         isAuthenticated: false,
         error: error.response.data.message || "Error checking auth",
         isCheckingAuth: false,
+      });
+      throw error;
+    }
+  },
+
+  logout: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await axios.post(`${API_URL}/logout`);
+      set({
+        isLoading: false,
+        isAuthenticated: false,
+        user: null,
+        error: null,
+      });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error logging out",
+      });
+      throw error;
+    }
+  },
+
+  forgotPassword: async (email) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${API_URL}/forgot-password`, {
+        email,
+      });
+      set({
+        isLoading: false,
+        error: null,
+        message: response.data.message,
+      });
+      return response.data;
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error forgetting password",
+      });
+      throw error;
+    }
+  },
+  resetPassword: async (token, password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(`${API_URL}/reset-password/${token}`, {
+        password,
+      });
+      set({
+        isLoading: false,
+        message: response.data.message,
+      });
+      return response.data;
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "Error resetting password",
       });
       throw error;
     }
