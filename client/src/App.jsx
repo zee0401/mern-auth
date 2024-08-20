@@ -12,13 +12,16 @@ import {
   ProtectedRoutes,
   RedirectAuthenticatedUser,
 } from "./utils/protectedRoutes";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
-  const { checkAuth } = useAuthStore();
+  const { checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  if (!isCheckingAuth) return <LoadingSpinner />;
 
   return (
     <div

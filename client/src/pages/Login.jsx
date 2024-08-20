@@ -3,13 +3,16 @@ import Input from "../components/Input";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Loader, Lock, Mail } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    console.log("Login", email, password);
+  const { login, isLoading, error } = useAuthStore();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    await login(email, password);
   };
 
   return (
@@ -39,6 +42,7 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
           <div className="flex items-center mb-6">
             <Link
               to="/forgot-password"
